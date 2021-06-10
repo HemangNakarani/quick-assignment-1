@@ -33,11 +33,8 @@ function appendListToMenu(photoList) {
 
   photoList.forEach((photo, index) => {
     const menuitem = document.createElement("div");
-    menuitem.classList.add("photo-title");
+    menuitem.classList.add("photo-menu-item");
     menuitem.setAttribute("id", "photo-" + index);
-
-    const thumbnail_box = document.createElement("div");
-    thumbnail_box.classList.add("thumbnail");
 
     const thumbnail_image = document.createElement("img");
     thumbnail_image.setAttribute("alt", photo.title);
@@ -47,8 +44,7 @@ function appendListToMenu(photoList) {
     image_title.classList.add("add-ellipsis");
     image_title.innerText = photo.title;
 
-    thumbnail_box.appendChild(thumbnail_image);
-    menuitem.appendChild(thumbnail_box);
+    menuitem.appendChild(thumbnail_image);
     menuitem.appendChild(image_title);
 
     menuitem.addEventListener("click", (event) => {
@@ -68,13 +64,13 @@ function replacePhoto(id, photo) {
   menuitem.style.backgroundColor = "#1c6cfd";
   menuitem.style.color = "white";
 
-  current = id;
-
   const img = document.querySelector(".photo-preview img");
   const tag = document.querySelector(".photo_caption");
 
   img.setAttribute("src", photo.previewImage);
   tag.innerText = photo.title;
+
+  current = id;
 }
 
 window.addEventListener("keydown", (event) => {

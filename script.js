@@ -86,15 +86,15 @@ function replacePhoto(id, photo) {
 }
 
 window.addEventListener("keydown", (event) => {
-  event.preventDefault();
-
   switch (event.key) {
     case "ArrowDown": {
+      event.preventDefault();
       let index = (current + 1) % photoList.length;
       replacePhoto(index, photoList[index]);
       break;
     }
     case "ArrowUp": {
+      event.preventDefault();
       let index = (current - 1 + photoList.length) % photoList.length;
       replacePhoto(index, photoList[index]);
       break;

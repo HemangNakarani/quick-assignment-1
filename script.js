@@ -40,12 +40,24 @@ function appendListToMenu(photoList) {
     thumbnail_image.setAttribute("alt", photo.title);
     thumbnail_image.setAttribute("src", photo.previewImage);
 
-    const image_title = document.createElement("h4");
-    image_title.classList.add("add-ellipsis");
-    image_title.innerText = photo.title;
+    let lengthOfPhotoTitle = photo.title.length;
+
+    const image_title_first_half = document.createElement("h4");
+    image_title_first_half.classList.add("add-ellipsis");
+    image_title_first_half.innerText = photo.title.slice(
+      0,
+      lengthOfPhotoTitle / 2
+    );
+
+    const image_title_second_half = document.createElement("h4");
+    image_title_second_half.classList.add("add-reverse-ellipsis");
+    image_title_second_half.innerText = photo.title.slice(
+      lengthOfPhotoTitle / 2
+    );
 
     menuitem.appendChild(thumbnail_image);
-    menuitem.appendChild(image_title);
+    menuitem.appendChild(image_title_first_half);
+    menuitem.appendChild(image_title_second_half);
 
     menuitem.addEventListener("click", (event) => {
       replacePhoto(index, photo);

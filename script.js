@@ -29,7 +29,7 @@ let photoList = [
 var current = 0;
 
 function appendListToMenu(photoList) {
-  const menu = document.querySelector(".grid-item.menu");
+  const menu = document.querySelector(".photo-menu-wrapper");
 
   photoList.forEach((photo, index) => {
     const menuitem = document.createElement("div");

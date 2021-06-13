@@ -88,7 +88,7 @@ const fitTruncatedText = () => {
     node.textContent = nodeText;
     let totalCharsToBeTruncated = 1;
 
-    do {
+    while (node.clientWidth < node.scrollWidth) {
       let halfTextLength = Math.round(textLength / 2);
 
       let charsToBeTruncatedFromLeftText = totalCharsToBeTruncated / 2;
@@ -98,16 +98,16 @@ const fitTruncatedText = () => {
 
       let leftText = nodeText.slice(
         0,
-        halfTextLength - charsToBeTruncatedFromLeftText - 1
+        halfTextLength - charsToBeTruncatedFromLeftText
       );
       let rightText = nodeText.slice(
-        halfTextLength + charsToBeTruncatedFromRightText + 1
+        halfTextLength + charsToBeTruncatedFromRightText
       );
 
       node.textContent = leftText + "..." + rightText;
 
       totalCharsToBeTruncated += 1;
-    } while (node.clientWidth < node.scrollWidth);
+    }
   });
 };
 

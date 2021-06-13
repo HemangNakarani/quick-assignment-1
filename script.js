@@ -45,12 +45,19 @@ function getMenuItem(photo, index) {
   thumbnail_image.setAttribute("alt", photo.title);
   thumbnail_image.setAttribute("src", photo.previewImage);
 
-  const title_text = document.createElement("h4");
-  title_text.classList.add("add-ellipsis");
-  title_text.innerText = photo.title;
+  let lengthOfText = photo.title.length;
+
+  const title_text_first_half = document.createElement("h4");
+  title_text_first_half.classList.add("add-ellipsis");
+  title_text_first_half.innerText = photo.title.slice(0, lengthOfText / 2);
+
+  const title_text_second_half = document.createElement("h4");
+  title_text_second_half.classList.add("add-reverse-ellipsis");
+  title_text_second_half.innerText = photo.title.slice(lengthOfText / 2);
 
   menuitem.appendChild(thumbnail_image);
-  menuitem.appendChild(title_text);
+  menuitem.appendChild(title_text_first_half);
+  menuitem.appendChild(title_text_second_half);
 
   menuitem.addEventListener("click", (event) => {
     replacePhoto(index, photo);
@@ -77,40 +84,6 @@ function replacePhoto(id, photo) {
   current = id;
 }
 
-const fitTruncatedText = () => {
-  const menuNodes = document.querySelectorAll(
-    ".photo-menu-wrapper .add-ellipsis"
-  );
-
-  menuNodes.forEach((node, index) => {
-    const nodeText = photoList[index].title;
-    const textLength = nodeText.length;
-    node.textContent = nodeText;
-    let totalCharsToBeTruncated = 1;
-
-    while (node.clientWidth < node.scrollWidth) {
-      let halfTextLength = Math.round(textLength / 2);
-
-      let charsToBeTruncatedFromLeftText = totalCharsToBeTruncated / 2;
-
-      let charsToBeTruncatedFromRightText =
-        totalCharsToBeTruncated - charsToBeTruncatedFromLeftText;
-
-      let leftText = nodeText.slice(
-        0,
-        halfTextLength - charsToBeTruncatedFromLeftText
-      );
-      let rightText = nodeText.slice(
-        halfTextLength + charsToBeTruncatedFromRightText
-      );
-
-      node.textContent = leftText + "..." + rightText;
-
-      totalCharsToBeTruncated += 1;
-    }
-  });
-};
-
 window.addEventListener("keydown", (event) => {
   switch (event.key) {
     case "ArrowDown": {
@@ -130,5 +103,3 @@ window.addEventListener("keydown", (event) => {
 
 appendListToMenu(photoList);
 replacePhoto(current, photoList[current]);
-fitTruncatedText();
-window.addEventListener("resize", () => fitTruncatedText());

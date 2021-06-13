@@ -117,22 +117,15 @@ h4 {
 
 .add-ellipsis {
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.add-reverse-ellipsis {
-  overflow: hidden;
   text-overflow: clip;
   white-space: nowrap;
-  direction: rtl;
 }
 
 /* second part - Preview */
 .photo-preview {
   overflow: hidden;
   border-radius: 0.5em;
-  width: 580px;
+  width: 500px;
   height: 800px;
 }
 

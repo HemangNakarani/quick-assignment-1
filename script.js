@@ -32,39 +32,31 @@ function appendListToMenu(photoList) {
   const menu = document.querySelector(".photo-menu-wrapper");
 
   photoList.forEach((photo, index) => {
-    const menuitem = document.createElement("div");
-    menuitem.classList.add("photo-menu-item");
-    menuitem.setAttribute("id", "photo-" + index);
-
-    const thumbnail_image = document.createElement("img");
-    thumbnail_image.setAttribute("alt", photo.title);
-    thumbnail_image.setAttribute("src", photo.previewImage);
-
-    let lengthOfPhotoTitle = photo.title.length;
-
-    const image_title_first_half = document.createElement("h4");
-    image_title_first_half.classList.add("add-ellipsis");
-    image_title_first_half.innerText = photo.title.slice(
-      0,
-      lengthOfPhotoTitle / 2
-    );
-
-    const image_title_second_half = document.createElement("h4");
-    image_title_second_half.classList.add("add-reverse-ellipsis");
-    image_title_second_half.innerText = photo.title.slice(
-      lengthOfPhotoTitle / 2
-    );
-
-    menuitem.appendChild(thumbnail_image);
-    menuitem.appendChild(image_title_first_half);
-    menuitem.appendChild(image_title_second_half);
-
-    menuitem.addEventListener("click", (event) => {
-      replacePhoto(index, photo);
-    });
-
-    menu.appendChild(menuitem);
+    menu.appendChild(getMenuItem(photo, index));
   });
+}
+
+function getMenuItem(photo, index) {
+  const menuitem = document.createElement("div");
+  menuitem.classList.add("photo-menu-item");
+  menuitem.setAttribute("id", "photo-" + index);
+
+  const thumbnail_image = document.createElement("img");
+  thumbnail_image.setAttribute("alt", photo.title);
+  thumbnail_image.setAttribute("src", photo.previewImage);
+
+  const title_text = document.createElement("h4");
+  title_text.classList.add("add-ellipsis");
+  title_text.innerText = photo.title;
+
+  menuitem.appendChild(thumbnail_image);
+  menuitem.appendChild(title_text);
+
+  menuitem.addEventListener("click", (event) => {
+    replacePhoto(index, photo);
+  });
+
+  return menuitem;
 }
 
 function replacePhoto(id, photo) {
@@ -85,6 +77,40 @@ function replacePhoto(id, photo) {
   current = id;
 }
 
+const fitTruncatedText = () => {
+  const menuNodes = document.querySelectorAll(
+    ".photo-menu-wrapper .add-ellipsis"
+  );
+
+  menuNodes.forEach((node, index) => {
+    const nodeText = photoList[index].title;
+    const textLength = nodeText.length;
+    node.textContent = nodeText;
+    let totalCharsToBeTruncated = 1;
+
+    do {
+      let halfTextLength = Math.round(textLength / 2);
+
+      let charsToBeTruncatedFromLeftText = totalCharsToBeTruncated / 2;
+
+      let charsToBeTruncatedFromRightText =
+        totalCharsToBeTruncated - charsToBeTruncatedFromLeftText;
+
+      let leftText = nodeText.slice(
+        0,
+        halfTextLength - charsToBeTruncatedFromLeftText - 1
+      );
+      let rightText = nodeText.slice(
+        halfTextLength + charsToBeTruncatedFromRightText + 1
+      );
+
+      node.textContent = leftText + "..." + rightText;
+
+      totalCharsToBeTruncated += 1;
+    } while (node.clientWidth < node.scrollWidth);
+  });
+};
+
 window.addEventListener("keydown", (event) => {
   switch (event.key) {
     case "ArrowDown": {
@@ -104,3 +130,5 @@ window.addEventListener("keydown", (event) => {
 
 appendListToMenu(photoList);
 replacePhoto(current, photoList[current]);
+fitTruncatedText();
+window.addEventListener("resize", () => fitTruncatedText());

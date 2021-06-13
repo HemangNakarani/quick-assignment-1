@@ -45,19 +45,12 @@ function getMenuItem(photo, index) {
   thumbnail_image.setAttribute("alt", photo.title);
   thumbnail_image.setAttribute("src", photo.previewImage);
 
-  let lengthOfText = photo.title.length;
-
-  const title_text_first_half = document.createElement("h4");
-  title_text_first_half.classList.add("add-ellipsis");
-  title_text_first_half.innerText = photo.title.slice(0, lengthOfText / 2);
-
-  const title_text_second_half = document.createElement("h4");
-  title_text_second_half.classList.add("add-reverse-ellipsis");
-  title_text_second_half.innerText = photo.title.slice(lengthOfText / 2);
+  const title_text = document.createElement("h4");
+  title_text.classList.add("add-ellipsis");
+  title_text.innerText = photo.title;
 
   menuitem.appendChild(thumbnail_image);
-  menuitem.appendChild(title_text_first_half);
-  menuitem.appendChild(title_text_second_half);
+  menuitem.appendChild(title_text);
 
   menuitem.addEventListener("click", (event) => {
     replacePhoto(index, photo);
@@ -101,5 +94,30 @@ window.addEventListener("keydown", (event) => {
   }
 });
 
+function fitTheText() {
+  const nodeList = document.querySelectorAll(".photo-menu-item .add-ellipsis");
+  nodeList.forEach((node, index) => {
+    node.textContent = photoList[index].title;
+
+    if (node.clientWidth < node.scrollWidth) {
+      let titleText = node.textContent;
+      let lengthOfText = titleText.length;
+      let fittingRatio = node.clientWidth / node.scrollWidth;
+
+      let charactersToBeRendered = Math.floor(lengthOfText * fittingRatio);
+      charactersToBeRendered -= 3; // for balancing the different lengths of characters
+
+      let leftText = titleText.slice(0, charactersToBeRendered / 2);
+      let rightText = titleText.slice(
+        lengthOfText - charactersToBeRendered / 2
+      );
+
+      node.textContent = leftText + "..." + rightText;
+    }
+  });
+}
+
 appendListToMenu(photoList);
 replacePhoto(current, photoList[current]);
+fitTheText();
+window.addEventListener("resize", fitTheText);

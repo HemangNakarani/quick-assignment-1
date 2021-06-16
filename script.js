@@ -22,7 +22,7 @@ let photoList = [
   {
     previewImage: "https://source.unsplash.com/user/erondu",
     title:
-      "abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz",
+      "aaa bbb ccc ddd eee fff ggg hhh iii jjj kkk aaa bbb ccc ddd eee fff ggg hhh iii jjj kkk aaa bbb ccc ddd eee fff ggg hhh iii jjj kkk",
   },
   {
     previewImage: "https://source.unsplash.com/random",
@@ -152,6 +152,6 @@ window.addEventListener("keydown", (event) => {
 });
 
 appendListToMenu(photoList);
-setTimeout(() => FitTextNodeList(), 100);
+FitTextNodeList();
 replacePhoto(current, photoList[current]);
 window.addEventListener("resize", FitTextNodeList);

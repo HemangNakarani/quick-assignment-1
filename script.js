@@ -20,9 +20,13 @@ let photoList = [
     title: "NextByk Investor Pitch 2021.ppt",
   },
   {
-    previewImage:
-      "https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
-    title: "interns-performance-report-june-2021.key",
+    previewImage: "https://source.unsplash.com/user/erondu",
+    title:
+      "abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz",
+  },
+  {
+    previewImage: "https://source.unsplash.com/random",
+    title: "abcdefghijklmnopqrstuvwxyz",
   },
 ];
 
@@ -46,7 +50,7 @@ function getMenuItem(photo, index) {
   thumbnail_image.setAttribute("src", photo.previewImage);
 
   const title_text = document.createElement("h4");
-  title_text.classList.add("add-ellipsis");
+  title_text.classList.add("add-word-break");
   title_text.innerText = photo.title;
 
   menuitem.appendChild(thumbnail_image);
@@ -59,6 +63,59 @@ function getMenuItem(photo, index) {
   return menuitem;
 }
 
+function FitTextNodeList() {
+  const nodeList = document.querySelectorAll(".photo-menu-item h4");
+  nodeList.forEach((node, index) => {
+    FitTextNode(node, index);
+  });
+}
+
+function FitTextNode(node, index) {
+  let originalText = photoList[index].title;
+  let halfLength = Math.floor(originalText.length / 2);
+
+  node.textContent = "M"; // to mesure maxHeight on oneLine
+  let oneLineHeight = node.clientHeight;
+
+  node.textContent = originalText;
+
+  // Binary Search to Fit the content
+  let l = 0;
+  let r = originalText.length;
+  let numOfLines = 3; // Number Of Lines We can afford before truncation
+
+  while (l < r) {
+    let mid = l + Math.floor((r - l) / 2);
+
+    let removeFromLeft = Math.floor(mid / 2);
+    let removeFromRight = mid - removeFromLeft;
+
+    let leftText = originalText.slice(0, halfLength - removeFromLeft);
+    let rightText = originalText.slice(halfLength + removeFromRight);
+
+    node.textContent = leftText + "..." + rightText;
+
+    if (node.clientHeight > numOfLines * oneLineHeight) {
+      l = mid + 1;
+    } else {
+      r = mid;
+    }
+  }
+
+  // if the String is getting ovweFlow then truncate with binary-search Answer;
+  if (l !== 0) {
+    let removeFromLeft = Math.floor(l / 2);
+    let removeFromRight = l - removeFromLeft;
+
+    let leftText = originalText.slice(0, halfLength - removeFromLeft);
+    let rightText = originalText.slice(halfLength + removeFromRight);
+
+    node.textContent = leftText + "..." + rightText;
+  } else {
+    node.textContent = originalText;
+  }
+}
+
 function replacePhoto(id, photo) {
   const current_photo = document.querySelector("#photo-" + current);
   current_photo.style.backgroundColor = "white";
@@ -69,10 +126,10 @@ function replacePhoto(id, photo) {
   menuitem.style.color = "white";
 
   const img = document.querySelector(".photo-preview img");
-  const tag = document.querySelector(".photo_caption");
+  const tag = document.querySelector(".photo-caption");
 
   img.setAttribute("src", photo.previewImage);
-  tag.innerText = photo.title;
+  tag.textContent = photo.title;
 
   current = id;
 }
@@ -94,30 +151,7 @@ window.addEventListener("keydown", (event) => {
   }
 });
 
-function fitTheText() {
-  const nodeList = document.querySelectorAll(".photo-menu-item .add-ellipsis");
-  nodeList.forEach((node, index) => {
-    node.textContent = photoList[index].title;
-
-    if (node.clientWidth < node.scrollWidth) {
-      let titleText = node.textContent;
-      let lengthOfText = titleText.length;
-      let fittingRatio = node.clientWidth / node.scrollWidth;
-
-      let charactersToBeRendered = Math.floor(lengthOfText * fittingRatio);
-      charactersToBeRendered -= 3; // for balancing the different lengths of characters
-
-      let leftText = titleText.slice(0, charactersToBeRendered / 2);
-      let rightText = titleText.slice(
-        lengthOfText - charactersToBeRendered / 2
-      );
-
-      node.textContent = leftText + "..." + rightText;
-    }
-  });
-}
-
 appendListToMenu(photoList);
+setTimeout(() => FitTextNodeList(), 100);
 replacePhoto(current, photoList[current]);
-fitTheText();
-window.addEventListener("resize", fitTheText);
+window.addEventListener("resize", FitTextNodeList);

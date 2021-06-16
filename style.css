@@ -115,10 +115,9 @@ h4 {
   margin-right: 0.5em;
 }
 
-.add-ellipsis {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.add-word-break {
+  min-width: 0;
+  word-wrap: break-word;
 }
 
 /* second part - Preview */
@@ -135,15 +134,28 @@ h4 {
   object-fit: cover;
 }
 
+.photo-caption {
+  width: 500px;
+  color: grey;
+  text-align: center;
+  margin: 0.5em 0;
+}
+
 @media (max-width: 1023px) {
   .photo-preview {
     height: 70vh;
     width: 100%;
   }
+  .photo-caption {
+    width: 100%;
+    color: grey;
+    text-align: center;
+    margin: 0.5em 0;
+  }
 }
 
-.photo_caption {
-  color: grey;
-  text-align: center;
-  margin: 0.5em 0;
+.add-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

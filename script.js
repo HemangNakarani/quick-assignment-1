@@ -20,13 +20,19 @@ let photoList = [
     title: "NextByk Investor Pitch 2021.ppt",
   },
   {
-    previewImage: "https://source.unsplash.com/user/erondu",
+    previewImage:
+      "https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
+    title: "interns-performance-report-june-2021.key",
+  },
+  {
+    previewImage: "https://source.unsplash.com/1HcK5xQoUKQ",
     title:
       "aaa bbb ccc ddd eee fff ggg hhh iii jjj kkk aaa bbb ccc ddd eee fff ggg hhh iii jjj kkk aaa bbb ccc ddd eee fff ggg hhh iii jjj kkk",
   },
   {
-    previewImage: "https://source.unsplash.com/random",
-    title: "abcdefghijklmnopqrstuvwxyz",
+    previewImage: "https://source.unsplash.com/3esjG-nlgyk",
+    title:
+      "abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz",
   },
 ];
 
@@ -152,6 +158,8 @@ window.addEventListener("keydown", (event) => {
 });
 
 appendListToMenu(photoList);
-FitTextNodeList();
+window.addEventListener("load", () => {
+  FitTextNodeList();
+});
 replacePhoto(current, photoList[current]);
 window.addEventListener("resize", FitTextNodeList);

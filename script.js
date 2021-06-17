@@ -158,7 +158,7 @@ window.addEventListener("keydown", (event) => {
 });
 
 appendListToMenu(photoList);
-window.addEventListener("load", () => {
+document.fonts.ready.then(() => {
   FitTextNodeList();
 });
 replacePhoto(current, photoList[current]);
